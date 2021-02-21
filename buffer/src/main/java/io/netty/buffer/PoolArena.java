@@ -39,11 +39,15 @@ abstract class PoolArena<T> extends SizeClasses implements PoolArenaMetric {
 
     final PooledByteBufAllocator parent;
 
+    // small请求的双向链表头个数
     final int numSmallSubpagePools;
+    // 对齐基准
     final int directMemoryCacheAlignment;
-    final int directMemoryCacheAlignmentMask;
-    private final PoolSubpage<T>[] smallSubpagePools;
 
+    final int directMemoryCacheAlignmentMask;
+    // Subpage双向链表
+    private final PoolSubpage<T>[] smallSubpagePools;
+    // 用于对齐内存
     private final PoolChunkList<T> q050;
     private final PoolChunkList<T> q025;
     private final PoolChunkList<T> q000;

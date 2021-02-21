@@ -118,7 +118,9 @@ abstract class SizeClasses implements SizeClassesMetric {
     }
 
     protected final int pageSize;
+    // 用于辅助计算
     protected final int pageShifts;
+    // chunk的大小
     protected final int chunkSize;
     protected final int directMemoryCacheAlignment;
 

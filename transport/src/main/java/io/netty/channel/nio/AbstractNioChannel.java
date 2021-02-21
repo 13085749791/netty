@@ -81,6 +81,7 @@ public abstract class AbstractNioChannel extends AbstractChannel {
         this.ch = ch;
         this.readInterestOp = readInterestOp;
         try {
+            // 设置 Channel 是非阻塞模式。
             ch.configureBlocking(false);
         } catch (IOException e) {
             try {
@@ -410,6 +411,7 @@ public abstract class AbstractNioChannel extends AbstractChannel {
         readPending = true;
 
         final int interestOps = selectionKey.interestOps();
+        // 注册 OP_ACCEPT 事件到服务端 Channel 的事件集合
         if ((interestOps & readInterestOp) == 0) {
             selectionKey.interestOps(interestOps | readInterestOp);
         }

@@ -70,9 +70,9 @@ public abstract class AbstractChannel extends DefaultAttributeMap implements Cha
      */
     protected AbstractChannel(Channel parent) {
         this.parent = parent;
-        id = newId();
-        unsafe = newUnsafe();
-        pipeline = newChannelPipeline();
+        id = newId(); // Channel 全局唯一 id 
+        unsafe = newUnsafe(); // unsafe 操作底层读写
+        pipeline = newChannelPipeline(); // pipeline 负责业务处理器编排
     }
 
     /**
@@ -461,13 +461,17 @@ public abstract class AbstractChannel extends DefaultAttributeMap implements Cha
                         new IllegalStateException("incompatible event loop type: " + eventLoop.getClass().getName()));
                 return;
             }
-
+            // 将这个 eventLoop 实例设置给这个 channel，从此这个 channel 就是有 eventLoop 的了,后续该 channel 中的所有异步操作，都要提交给这个 eventLoop 来执行
             AbstractChannel.this.eventLoop = eventLoop;
 
+            // 如果发起 register 动作的线程就是 eventLoop 实例中的线程，那么直接调用 register0(promise)
+            // 对于我们来说，它不会进入到这个分支，
+            // 之所以有这个分支，是因为我们是可以 unregister，然后再 register 的，后面再仔细看
             if (eventLoop.inEventLoop()) {
                 register0(promise);
             } else {
                 try {
+                    // 否则，提交任务给 eventLoop，eventLoop 中的线程会负责调用 register0(promise)
                     eventLoop.execute(new Runnable() {
                         @Override
                         public void run() {
@@ -493,7 +497,7 @@ public abstract class AbstractChannel extends DefaultAttributeMap implements Cha
                     return;
                 }
                 boolean firstRegistration = neverRegistered;
-                doRegister();
+                doRegister(); // 调用 JDK 底层的 register() 进行注册
                 neverRegistered = false;
                 registered = true;
 
@@ -507,6 +511,7 @@ public abstract class AbstractChannel extends DefaultAttributeMap implements Cha
                 // multiple channel actives if the channel is deregistered and re-registered.
                 if (isActive()) {
                     if (firstRegistration) {
+                        // Channel 当前状态为活跃时，触发 channelActive 事件
                         pipeline.fireChannelActive();
                     } else if (config().isAutoRead()) {
                         // This channel was registered before and autoRead() is set. This means we need to begin read
@@ -547,7 +552,7 @@ public abstract class AbstractChannel extends DefaultAttributeMap implements Cha
 
             boolean wasActive = isActive();
             try {
-                doBind(localAddress);
+                doBind(localAddress); // 调用 JDK 底层进行端口绑定
             } catch (Throwable t) {
                 safeSetFailure(promise, t);
                 closeIfClosed();

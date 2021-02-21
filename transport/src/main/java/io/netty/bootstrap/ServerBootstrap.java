@@ -129,11 +129,14 @@ public class ServerBootstrap extends AbstractBootstrap<ServerBootstrap, ServerCh
 
     @Override
     void init(Channel channel) {
+        // 设置 Socket 参数
         setChannelOptions(channel, newOptionsArray(), logger);
+        // 保存用户自定义属性
         setAttributes(channel, attrs0().entrySet().toArray(EMPTY_ATTRIBUTE_ARRAY));
 
+        // 拿到刚刚创建的 channel 内部的 pipeline 实例
         ChannelPipeline p = channel.pipeline();
-
+        // 获取 ServerBootstrapAcceptor 的构造参数
         final EventLoopGroup currentChildGroup = childGroup;
         final ChannelHandler currentChildHandler = childHandler;
         final Entry<ChannelOption<?>, Object>[] currentChildOptions;
@@ -141,19 +144,23 @@ public class ServerBootstrap extends AbstractBootstrap<ServerBootstrap, ServerCh
             currentChildOptions = childOptions.entrySet().toArray(EMPTY_OPTION_ARRAY);
         }
         final Entry<AttributeKey<?>, Object>[] currentChildAttrs = childAttrs.entrySet().toArray(EMPTY_ATTRIBUTE_ARRAY);
-
+        // 开始往 pipeline 中添加一个 handler，这个 handler 是 ChannelInitializer 的实例
         p.addLast(new ChannelInitializer<Channel>() {
             @Override
             public void initChannel(final Channel ch) {
                 final ChannelPipeline pipeline = ch.pipeline();
+                // 这个方法返回我们最开始指定的 Handler 实例
                 ChannelHandler handler = config.handler();
                 if (handler != null) {
+                    // 添加 Handler
                     pipeline.addLast(handler);
                 }
 
                 ch.eventLoop().execute(new Runnable() {
                     @Override
                     public void run() {
+                        // 添加一个 handler 到 pipeline 中：ServerBootstrapAcceptor
+                        // 从名字可以看到，这个 handler 的目的是用于接收客户端请求
                         pipeline.addLast(new ServerBootstrapAcceptor(
                                 ch, currentChildGroup, currentChildHandler, currentChildOptions, currentChildAttrs));
                     }
