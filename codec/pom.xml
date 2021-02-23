@@ -93,19 +93,19 @@
     <dependency>
       <groupId>org.jboss.marshalling</groupId>
       <artifactId>jboss-marshalling-serial</artifactId>
-      <scope>test</scope>
+      <scope>ByteBufAllocatorTest</scope>
     </dependency>
     <dependency>
       <groupId>org.jboss.marshalling</groupId>
       <artifactId>jboss-marshalling-river</artifactId>
-      <scope>test</scope>
+      <scope>ByteBufAllocatorTest</scope>
     </dependency>
 
     <!-- Test dependency for Bzip2 compression codec -->
     <dependency>
       <groupId>org.apache.commons</groupId>
       <artifactId>commons-compress</artifactId>
-      <scope>test</scope>
+      <scope>ByteBufAllocatorTest</scope>
     </dependency>
   </dependencies>
 </project>

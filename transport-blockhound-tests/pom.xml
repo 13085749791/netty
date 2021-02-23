@@ -86,7 +86,7 @@
     <dependency>
       <groupId>io.projectreactor.tools</groupId>
       <artifactId>blockhound</artifactId>
-      <scope>test</scope>
+      <scope>ByteBufAllocatorTest</scope>
     </dependency>
   </dependencies>
 </project>

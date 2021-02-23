@@ -770,7 +770,7 @@
         <artifactId>maven-surefire-plugin</artifactId>
         <executions>
           <execution>
-            <id>default-test</id>
+            <id>default-ByteBufAllocatorTest</id>
             <phase>none</phase>
           </execution>
         </executions>

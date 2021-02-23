@@ -28,16 +28,25 @@ import java.nio.channels.ScatteringByteChannel;
 
 abstract class PooledByteBuf<T> extends AbstractReferenceCountedByteBuf {
 
+
+    // Recycler 处理器，用于回收对象
     private final Handle<PooledByteBuf<T>> recyclerHandle;
 
     protected PoolChunk<T> chunk;
+    // 在块中的节点编号，如果是页内空间，还有页内空间编号；
     protected long handle;
+    // 内存空间。具体什么样的数据，通过子类设置泛型
     protected T memory;
+    // 使用 memory 的开始位置
     protected int offset;
+    // 目前使用 memory 的长度
     protected int length;
+    // 最大使用 memory 的长度
     int maxLength;
+    // 关联的线程本地缓存
     PoolThreadCache cache;
     ByteBuffer tmpNioBuf;
+    // ByteBuf 分配器对象
     private ByteBufAllocator allocator;
 
     @SuppressWarnings("unchecked")
@@ -51,6 +60,7 @@ abstract class PooledByteBuf<T> extends AbstractReferenceCountedByteBuf {
         init0(chunk, nioBuffer, handle, offset, length, maxLength, cache);
     }
 
+    // 底层空间太大，块中分配不了时，会单独创建一个块，来分配空间
     void initUnpooled(PoolChunk<T> chunk, int length) {
         init0(chunk, null, 0, chunk.offset, length, length, null);
     }
@@ -100,11 +110,13 @@ abstract class PooledByteBuf<T> extends AbstractReferenceCountedByteBuf {
         checkNewCapacity(newCapacity);
         if (!chunk.unpooled) {
             // If the request capacity does not require reallocation, just update the length of the memory.
+            // 扩容
             if (newCapacity > length) {
                 if (newCapacity <= maxLength) {
                     length = newCapacity;
                     return this;
                 }
+                // 缩容 大于 maxLength 的一半 因为 Netty SubPage 最小是 16 ，如果小于等 16 ，无法缩容。
             } else if (newCapacity > maxLength >>> 1 &&
                     (maxLength > 512 || newCapacity > maxLength - 16)) {
                 // here newCapacity < length
@@ -115,6 +127,7 @@ abstract class PooledByteBuf<T> extends AbstractReferenceCountedByteBuf {
         }
 
         // Reallocation required.
+        // 重新分配新的内存空间，并将数据复制到其中。并且，释放老的内存空间。
         chunk.arena.reallocate(this, newCapacity, true);
         return this;
     }

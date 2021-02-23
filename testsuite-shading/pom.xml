@@ -130,7 +130,7 @@
           <classifier>${jni.classifier}</classifier>
           <scope>compile</scope>
         </dependency>
-        <!-- Needed to test shading of netty-tcnative -->
+        <!-- Needed to ByteBufAllocatorTest shading of netty-tcnative -->
         <dependency>
           <groupId>${project.groupId}</groupId>
           <artifactId>netty-handler</artifactId>
@@ -244,7 +244,7 @@
               <execution>
                 <phase>package</phase>
                 <goals>
-                  <goal>integration-test</goal>
+                  <goal>integration-ByteBufAllocatorTest</goal>
                 </goals>
               </execution>
             </executions>
@@ -276,7 +276,7 @@
           <classifier>${jni.classifier}</classifier>
           <scope>compile</scope>
         </dependency>
-        <!-- Needed to test shading of netty-tcnative -->
+        <!-- Needed to ByteBufAllocatorTest shading of netty-tcnative -->
         <dependency>
           <groupId>${project.groupId}</groupId>
           <artifactId>netty-handler</artifactId>
@@ -390,7 +390,7 @@
               <execution>
                 <phase>package</phase>
                 <goals>
-                  <goal>integration-test</goal>
+                  <goal>integration-ByteBufAllocatorTest</goal>
                 </goals>
               </execution>
             </executions>

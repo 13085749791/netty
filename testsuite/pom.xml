@@ -78,7 +78,7 @@
     </dependency>
 
     <!-- Testing frameworks and related dependencies -->
-    <!-- NOTE: Keep these dependencies in sync with the parent POM's common test dependencies. -->
+    <!-- NOTE: Keep these dependencies in sync with the parent POM's common ByteBufAllocatorTest dependencies. -->
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>

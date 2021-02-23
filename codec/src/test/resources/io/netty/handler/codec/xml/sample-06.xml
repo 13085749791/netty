@@ -51,9 +51,9 @@
    ...
 ]]></programlisting>
 				</informalexample>
-				The above example will test each
+				The above example will ByteBufAllocatorTest each
 				<literal>RocketContext</literal>
-				before it is passed to the client application and test
+				before it is passed to the client application and ByteBufAllocatorTest
 				<literal>RocketContext</literal>
 				s that have been sitting idle in orbit.
 			</para>

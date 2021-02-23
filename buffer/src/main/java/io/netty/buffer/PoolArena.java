@@ -134,6 +134,7 @@ abstract class PoolArena<T> extends SizeClasses implements PoolArenaMetric {
     }
 
     private void allocate(PoolThreadCache cache, PooledByteBuf<T> buf, final int reqCapacity) {
+        // 将需要申请的容量格式为 2^N
         final int sizeIdx = size2SizeIdx(reqCapacity);
 
         if (sizeIdx <= smallMaxSizeIdx) {

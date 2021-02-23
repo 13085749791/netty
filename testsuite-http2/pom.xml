@@ -110,7 +110,7 @@
         </configuration>
         <executions>
           <execution>
-            <phase>test</phase>
+            <phase>ByteBufAllocatorTest</phase>
             <goals>
               <goal>h2spec</goal>
             </goals>

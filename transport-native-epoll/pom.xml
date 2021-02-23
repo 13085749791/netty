@@ -385,19 +385,19 @@
       <groupId>io.netty</groupId>
       <artifactId>netty-testsuite</artifactId>
       <version>${project.version}</version>
-      <scope>test</scope>
+      <scope>ByteBufAllocatorTest</scope>
     </dependency>
     <dependency>
       <groupId>io.netty</groupId>
       <artifactId>netty-transport-native-unix-common-tests</artifactId>
       <version>${project.version}</version>
-      <scope>test</scope>
+      <scope>ByteBufAllocatorTest</scope>
     </dependency>
     <dependency>
       <groupId>${project.groupId}</groupId>
       <artifactId>${tcnative.artifactId}</artifactId>
       <classifier>${tcnative.classifier}</classifier>
-      <scope>test</scope>
+      <scope>ByteBufAllocatorTest</scope>
     </dependency>
   </dependencies>
 

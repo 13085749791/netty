@@ -220,7 +220,7 @@ public class @K@ObjectHashMapTest {
     }
 
     /**
-     * This test is a bit internal-centric. We're just forcing a rehash to occur based on no longer
+     * This ByteBufAllocatorTest is a bit internal-centric. We're just forcing a rehash to occur based on no longer
      * having any FREE slots available. We do this by adding and then removing several keys up to
      * the capacity, so that no rehash is done. We then add one more, which will cause the rehash
      * due to a lack of free slots and verify that everything is still behaving properly
@@ -546,9 +546,9 @@ public class @K@ObjectHashMapTest {
 
     @Test
     public void fuzzTest() {
-        // This test is so extremely internals-dependent that I'm not even trying to
-        // minimize that. Any internal changes will not fail the test (so it's not flaky per se)
-        // but will possibly make it less effective (not test interesting scenarios anymore).
+        // This ByteBufAllocatorTest is so extremely internals-dependent that I'm not even trying to
+        // minimize that. Any internal changes will not fail the ByteBufAllocatorTest (so it's not flaky per se)
+        // but will possibly make it less effective (not ByteBufAllocatorTest interesting scenarios anymore).
 
         // The RNG algorithm is specified and stable, so this will cause the same exact dataset
         // to be used in every run and every JVM implementation.
@@ -556,7 +556,7 @@ public class @K@ObjectHashMapTest {
 
         int baseSize = 1000;
         // Empirically-determined size to expand the capacity exactly once, and before
-        // the step that creates the long conflict chain. We need to test rehash(),
+        // the step that creates the long conflict chain. We need to ByteBufAllocatorTest rehash(),
         // but also control when rehash happens because it cleans up the REMOVED entries.
         // This size is also chosen so after the single rehash, the map will be densely
         // populated, getting close to a second rehash but not triggering it.
